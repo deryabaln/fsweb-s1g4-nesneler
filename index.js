@@ -1,6 +1,8 @@
 
 /*Bu görevleri yaparken çıktıların doğru çalıştığını kontrol etmeniz için console.log'u sıklıkla kullanmanızı tavsiye ediyoruz.*/
 
+const { resolvePlugin } = require("@babel/core");
+
 ///////////////Menu Elemanları ///////////////////
 const cay = {isim: "Çay", fiyat: 4, kategori: "İçecekler"};
 const serpmeKahvalti = {isim: "Serpme Kahvaltı", fiyat: 16, kategori:"Kahvaltı"};
@@ -15,10 +17,12 @@ const serpmeKahvalti = {isim: "Serpme Kahvaltı", fiyat: 16, kategori:"Kahvaltı
 */
 
 
-function MenuElemaniOlustur(/*Kodlar buraya*/){
-	/*Kodlar buraya*/
+function MenuElemaniOlustur(ürün, ücret, tür){
+	const nesne = {isim: ürün, fiyat: ücret, kategori: tür};
+	return nesne
 }
-
+	
+console.log(MenuElemaniOlustur('Cheeseburger', 8, 'Burgerler'))
 
 
 /*  Görev 1b (otomatik test yok): 
@@ -29,9 +33,15 @@ function MenuElemaniOlustur(/*Kodlar buraya*/){
 	3. Tüm döndürülen sonuçları konsolda gözlemleyin (console.log)
 	
 	Örnek: MenuElemaniOlustur("Karışık Pizza",5,"Pizzalar") şunu döndürür: {isim:"Karışık Pizza",fiyat:5,kategori:"Pizzalar"}
-*/
+*/ 
+MenuElemaniOlustur('taco', 8, 'lunch')
+console.log(MenuElemaniOlustur('taco', 8, 'lunch'))
 
+MenuElemaniOlustur('elma', 10, 'meyveler')
+console.log(MenuElemaniOlustur('elma', 10, 'meyveler'))
 
+MenuElemaniOlustur('california roll', 100, 'shusiler')
+console.log(MenuElemaniOlustur('california roll', 100, 'shusiler'))
 
 /* Görev 2: 
 	Özel bir öğle yemeği yiyorsun! Öğretmen ve öğrencilere %25, diğer kişilere %10 indirim var. Aşağıdaki burger nesnesine, indirimi fiyatı otomatik olarak hesaplayan bir metot ekleyin.
@@ -45,14 +55,23 @@ function MenuElemaniOlustur(/*Kodlar buraya*/){
 	Örnek: burger.indirim("öğretmen") 13.5 döndürmeli ve burger.indirim("diğer") 16.2 döndürmeli
 */
 
-
+let result = 0
 const burger = {
 	isim: "Burger", 
 	fiyat: 18, 
 	kategori: "Öğle Yemeği", 
-
+	indirim: function(kişi){
+		if(kişi == 'öğrenci' ||'öğretmen'){
+			result = burger.fiyat - (burger.fiyat * 25/100 )
+		}
+		if(kişi === 'diğer'){
+			result = burger.fiyat - (burger.fiyat * 10/100 )
+		}
+		return result 
+	}
 }
-
+console.log(burger.indirim('öğretmen'))
+console.log(burger.indirim('diğer'))
 
 
 ///////////////Değerlendirmeler (MVP)///////////////////
@@ -71,7 +90,7 @@ const degerlendirmeler = [
 	Yukarıdaki degerlendirmeler dizisini(array) kullanarak:
 	1. Sadece Ahmet'in geribildirimini konsolda görüntüleyin - fonksiyona gerek yok
 */
-
+console.log(degerlendirmeler[5])
 
 
 /*  Görev 4 (ototest yok):  
@@ -79,9 +98,11 @@ const degerlendirmeler = [
 	1. Bu geribildirimi Reyna'nın değerlendirmesine ekleyin - "bu mekan bir harika dostum, yine de garsonun gülümsememesinden puan kırdım"
 	2. degerlendirmeler dizisini konsolda görüntüleyerek çalışmanızı kontrol edin
 */
-
-
-
+const newNesne = degerlendirmeler[degerlendirmeler.length-1];
+newNesne.geribildirim = 'bu mekan bir harika dostum, yine de garsonun gülümsememesinden puan kırdım';
+degerlendirmeler.pop();
+degerlendirmeler.push(newNesne);
+console.log(degerlendirmeler)
 /*  Görev 5: 
 	isim, puan, geribildirim'i içeren bir değerlendirme nesnesi oluşturup, yeni değerlendirmeyi mevcut dizinin(array) sonuna ekleyip sonuç dizisini döndüren bir fonksiyon tanımlayın. 
 	
@@ -93,13 +114,15 @@ const degerlendirmeler = [
 	4. Güncellenmiş diziyi döndürecek
 */
 
-
-function DegerledirmeEkle(/*Kodlar buraya */){
-	/*Kodlar buraya */
-	
+function DegerledirmeEkle(degerlendirmeler, name, point, feedback){
+	let yeniDegerlendirme = {isim: name, puan: point, geribildirim: feedback};
+	let newArray = degerlendirmeler.push(yeniDegerlendirme);
+	for(let i= 0; i<newArray.length; i++){
+		 console.log(DegerledirmeEkle(degerlendirmeler, name, point, feedback))
+	}
+	return degerlendirmeler
 }
-
-
+console.log(DegerledirmeEkle(degerlendirmeler, 'hurşut', 2, 'Boktan yemekler!'))
 
 /*  Görev 6: 
 	Dizideki değerlendirmelerin anahtarına(key,index) bağlı olarak bir değerlendirme döndüren bir fonksiyon yazın
@@ -112,11 +135,11 @@ function DegerledirmeEkle(/*Kodlar buraya */){
 */
 
 
-function AnahtardanDegerlendirmeAl(/*Kodlar buraya*/) {
-	/*Kodlar buraya*/
-
+function AnahtardanDegerlendirmeAl(newArray, index) {
+	const nesne = newArray[index];
+	return nesne.isim + ' isimli kişi ' + nesne.puan + ' puan verdi ve şunları yazdı: ' + nesne.geribildirim
 }
-
+console.log(AnahtardanDegerlendirmeAl(degerlendirmeler, 0))
 
 
 /*  Görev 7:  
@@ -132,9 +155,11 @@ function AnahtardanDegerlendirmeAl(/*Kodlar buraya*/) {
 */
 
 
-function SonDegerlendirmeyiAl(/*Kodlar buraya*/) {
-	/*Kodlar buraya*/
+function SonDegerlendirmeyiAl(newArray) {
+	const nesne = newArray[newArray.length-1];
+	return nesne.isim + ' isimli kişi ' + nesne.puan + ' puan verdi ve şunları yazdı: ' + nesne.geribildirim
 } 
+console.log(SonDegerlendirmeyiAl(degerlendirmeler))
 
 
 
@@ -154,10 +179,16 @@ function SonDegerlendirmeyiAl(/*Kodlar buraya*/) {
 	]
 */
 
-function PuanaGoreDegerlendirmeAl(/* Kodlar buraya */) {
-    /* Kodlar buraya */
+function PuanaGoreDegerlendirmeAl(newArray, point) {
+	let result = []
+	for(let i = 0; i<newArray.length; i++){
+		if(newArray[i].puan >= point && newArray[i].puan < (point+1)){
+			result.push(newArray[i])
+		}
+	}
+  return result
 }
-
+//console.log(PuanaGoreDegerlendirmeAl(degerlendirmeler, 4))
 
 /*  BONUS 2:    
 	UzunDegerlendirmeleriAl fonksiyonuna aşağıdakileri uygulayın:
@@ -166,10 +197,18 @@ function PuanaGoreDegerlendirmeAl(/* Kodlar buraya */) {
 	
 */
 
-function UzunDegerlendirmeleriAl(/* Kodlar buraya */) {
-    /* Kodlar buraya */
-}
 
+function UzunDegerlendirmeleriAl(newArray) {
+	let result = []
+  for( let i = 0; i < newArray.length; i++){
+	let kelimeler= newArray[i].geribildirim.split(' ')
+	if(kelimeler.length>15){
+		result.push(newArray[i])
+	}
+  }
+	return result
+}
+console.log(UzunDegerlendirmeleriAl(degerlendirmeler))
 
 /*  BONUS 3:  
 	Bu ek görevde degerlendirmeler dizisi kullanılmayacak!  Bu görevde kendi nesnenizi yaratmanız gerekmektedir.
@@ -188,12 +227,20 @@ function UzunDegerlendirmeleriAl(/* Kodlar buraya */) {
 	Bu 110 döndürmelidir çünkü başlangıç kilometre sayacını 10 olarak tanımladık ve 100 km arabayı sürdük.
 */
 
-
-function arabaYapici(/* Kodlar buraya */) {
-    /* Kodlar buraya */
-    
+function arabaYapici(sayac) {
+	const araba = { 
+		kmSayaci: sayac, 
+		surus: function(km){
+			this.kmSayaci += km;
+			return this.kmSayaci
+		}
+	}
+    return araba
 }
+let araba1 = arabaYapici(10);
+console.log(araba1.surus(100))
 
+console.log(araba1.surus(300))
 
 /*  Buradan aşağıdaki kodları değiştirmeyin lütfen */
 function sa(){
